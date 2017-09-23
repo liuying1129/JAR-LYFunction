@@ -1,0 +1,56 @@
+//表示生成jar包
+apply plugin: 'java'
+//表示生成war包
+//apply plugin: 'war'
+
+//下面的install方法需要
+apply plugin: 'maven'
+
+group = 'com.yklis'
+version = '1.0-SNAPSHOT'
+//指定gradle install时生成jar包的artifactId
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'LYFunction' 
+    }
+}
+
+//配置仓库
+repositories {
+
+  //maven本地库
+  mavenLocal()
+  //maven远程库
+  mavenCentral()
+
+}
+
+//配置依赖
+dependencies {
+
+  //compile:编译项目源代码时会使用到该配置项中的依赖
+  //runtime:运行项目时会用到该配置项中的依赖。默认情况下，也会包含编译代码时候的依赖
+  //testCompile:编译测试代码时会用到该配置项中的依赖。默认情况下，也会包含编译和运行正式代码的依赖
+  //testRuntime:运行测试代码时会用到该配置项中的依赖。默认情况下，也会包含编译、运行正式代码以及编译测试代码的依赖
+
+  compile 'org.bouncycastle:bcprov-jdk15on:1.53'
+  compile 'commons-codec:commons-codec:1.10'
+  compile 'com.google.code.gson:gson:2.5'
+  compile 'log4j:log4j:1.2.16'
+  compile 'org.springframework:spring-core:4.1.7.RELEASE'
+  testCompile 'junit:junit:4.12'  
+
+}
+
+//解决maven编译时“错误:编码GBK的不可映射字符”的问题
+tasks.withType(JavaCompile) {  
+    options.encoding = "UTF-8"  
+}
+
+//指定build目录中生成的JAR包名称
+jar {
+
+  baseName = 'LYFunction'
+  version = ''
+
+}

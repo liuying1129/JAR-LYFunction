@@ -1,0 +1,84 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+  http://maven.apache.org/POM/4.0.0 
+  http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.yklis</groupId>
+	<artifactId>LYFunction</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<dependencies>
+	    <!-- scoper取值范围：
+	    compile，缺省值，适用于所有阶段，会随着项目一起发布。 
+	    provided，期望JDK、容器或使用者会提供这个依赖。如servlet.jar。 不会被打包
+	    runtime，只在运行时使用，如JDBC驱动，适用运行和测试阶段。 
+	    test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。 
+	    system，类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它 -->
+		<dependency>
+	    	<groupId>junit</groupId>
+	    	<artifactId>junit</artifactId>
+	    	<version>4.12</version>
+	    	<!-- <scope>test</scope> -->
+	    </dependency>		   
+			
+		<!-- RSA非对称加密算法 -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.53</version>
+        </dependency>
+        
+        <!-- RSA非对称加密算法 -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>                       
+	
+        <!-- google的JSON处理库 -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.5</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+        
+        <!-- MD5 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.1.7.RELEASE</version>
+        </dependency>
+                		
+	</dependencies>	
+
+	<build> 
+	    <!-- 如果不定义finalName，则生成的包名是artifactId-version.jar -->
+	    <!-- 定义finalName，则生成的包名是finalName.jar -->
+	    <finalName>LYFunction</finalName>
+	    
+	    <plugins>
+	        <!-- 解决maven编译时“错误:编码GBK的不可映射字符”的问题 -->
+	        <plugin>
+	           <groupId>org.apache.maven.plugins</groupId>  
+               <artifactId>maven-compiler-plugin</artifactId>  
+               <version>3.5.1</version>  
+               <configuration>  
+	               <source>1.7</source>  
+	               <target>1.7</target>  
+	               <encoding>utf8</encoding>    
+               </configuration>  
+	        </plugin>	        
+	    </plugins>	    
+	</build>
+  
+</project>
