@@ -205,11 +205,11 @@ public class DESUtil {
     }
     else
     {
-      for (int n = 1;n<=16;n++ )
+      for (int n = 0;n<16;n++ )
       {
-        for (int h = 1;h<=48;h++)
+        for (int h = 0;h<48;h++)
         {
-          G[17 - n][h] = C[Sc[n][h]];
+          G[15 - n][h] = C[Sc[n][h]-1];
         }
       }
     }
