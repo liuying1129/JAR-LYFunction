@@ -17,6 +17,18 @@ public class CommFunction {
     }
     
     /**
+     * 解密字符串
+     * @param aStr
+     * @param aKey
+     * @return
+     */
+    public static String deCryptStr(String aStr,String aKey){
+        
+        return DESUtil.DeCryptStr(aStr,aKey);
+        
+    }    
+    
+    /**
      * 接口参数签名sign校验
      * @param inputParamMap
      * @param token

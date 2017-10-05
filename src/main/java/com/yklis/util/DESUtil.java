@@ -413,4 +413,54 @@ public class DESUtil {
         
     return rStr.toUpperCase();
   }
+  
+  //解密字符串
+  public static String DeCryptStr(String aStr,String aKey){
+	  
+    int Key[]=new int[8];
+	Key=StrToKey(aKey.toCharArray());
+	DES_Init(Key, false);			    			    
+    
+    int Count = aStr.length()/2;
+    int[] baStr = new int[Count];
+    
+    for (int i = 0; i < Count; i++){
+    	
+    	baStr[i] = Integer.parseInt(aStr.substring(i*2, (i+1)*2), 16);
+    }
+        			    
+    StringBuilder sb = new StringBuilder("");
+        
+    int i2=baStr.length / 8;//取商    
+    
+    for (int i = 0;i< i2;i++){
+    	
+      int ReadBuf[]={0,0,0,0,0,0,0,0};
+      
+      ReadBuf[0]=baStr[i*8+0];
+      ReadBuf[1]=baStr[i*8+1];
+      ReadBuf[2]=baStr[i*8+2];
+      ReadBuf[3]=baStr[i*8+3];
+      ReadBuf[4]=baStr[i*8+4];
+      ReadBuf[5]=baStr[i*8+5];
+      ReadBuf[6]=baStr[i*8+6];
+      ReadBuf[7]=baStr[i*8+7];
+      
+      int WriteBuf[]=DES_Code(ReadBuf);
+      
+      for (int j = 0;j<= 7;j++){        
+        sb.append((char)WriteBuf[j]);
+      }
+    }
+    
+    String rStr = null;
+    
+    try {
+    	rStr = new String(sb.toString().getBytes("ISO8859_1"),"GB2312");
+	} catch (UnsupportedEncodingException e) {
+		e.printStackTrace();
+	}   
+    
+    return rStr;
+  }  
 }
