@@ -399,7 +399,7 @@ public class DESUtil {
           }
       }
       
-      if (aStr.equals("")||aStr.equals(null))//特例
+      if ("".equals(aStr)||null==aStr)//特例
       {
           int ReadBuf[]={0,0,0,0,0,0,0,0};
           
@@ -417,6 +417,11 @@ public class DESUtil {
   //解密字符串
   public static String DeCryptStr(String aStr,String aKey){
 	  
+	//aStr如传入"",不加该句时会返回"".不希望出现这种情况,所以返回一个不可见字符 
+	if("".equals(aStr)){
+		return (char)0x2+"";
+	}
+		
     int Key[]=new int[8];
 	Key=StrToKey(aKey.toCharArray());
 	DES_Init(Key, false);			    			    
