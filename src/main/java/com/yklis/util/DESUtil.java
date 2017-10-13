@@ -418,9 +418,9 @@ public class DESUtil {
   public static String DeCryptStr(String aStr,String aKey){
 	  
 	//aStr如传入"",不加该句时会返回"".不希望出现这种情况,所以返回一个不可见字符 
-	if("".equals(aStr)){
-		return (char)0x2+"";
-	}
+	//if("".equals(aStr)){
+	//	return (char)0x2+"";
+	//}
 		
     int Key[]=new int[8];
 	Key=StrToKey(aKey.toCharArray());
