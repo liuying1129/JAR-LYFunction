@@ -454,7 +454,8 @@ public class DESUtil {
       int WriteBuf[]=DES_Code(ReadBuf);
       
       for (int j = 0;j<= 7;j++){        
-        sb.append((char)WriteBuf[j]);
+    	  if(WriteBuf[j]==0) break;    	  
+          sb.append((char)WriteBuf[j]);
       }
     }
     
