@@ -29,6 +29,17 @@ public class CommFunction {
     }    
     
     /**
+     * 计算参数的签名值
+     * @param inputParamMap
+     * @param token
+     * @return
+     */
+    public static String signCalc(Map<String, String[]> inputParamMap,String token){  
+    	
+    	return SignCheckUtil.signCalc(inputParamMap, token);
+    }
+    
+    /**
      * 接口参数签名sign校验
      * @param inputParamMap
      * @param token

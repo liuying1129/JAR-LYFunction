@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.springframework.util.DigestUtils;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 
 public class SignCheckUtil {
 	
@@ -24,8 +24,45 @@ public class SignCheckUtil {
     
     public static boolean signCheck(Map<String, String[]> inputParamMap,String token){        
         
-        Gson gson = new Gson();
-        logger.info("请求参数:"+gson.toJson(inputParamMap));
+    	String signMD5 = signCalc(inputParamMap,token);
+    	
+    	String signValue = null;
+    			
+    	String[] sl1 = inputParamMap.get("sign");
+    	
+    	if(null!=sl1&&sl1.length > 0){
+
+    			signValue = sl1[0];		
+    	}
+        logger.info("签名校验。待校验签名值:"+signValue);
+        
+        if(signMD5.equalsIgnoreCase(signValue)) return true;
+        
+        return false;        
+    }
+    
+    static class RequestParameterComparator implements Comparator<Map.Entry<String,String[]>> {
+        
+        private Logger logger = Logger.getLogger(this.getClass());
+        
+        @Override
+        public int compare(Entry<String, String[]> o1, Entry<String, String[]> o2) {
+
+            try{
+                
+                return o1.getKey().compareTo(o2.getKey());
+                                                    
+            }catch(Exception e){
+                logger.error("RequestParameterComparator出错:"+e.toString());
+                return 0;
+            }
+        }
+ 
+    }
+    
+    public static String signCalc(Map<String, String[]> inputParamMap,String token){    
+    	
+        logger.info("计算签名。待计算参数:"+JSON.toJSONString(inputParamMap)+"token:"+token);
         
         List<Map.Entry<String,String[]>> list = new ArrayList<Map.Entry<String,String[]>>(inputParamMap.entrySet());
         
@@ -38,7 +75,6 @@ public class SignCheckUtil {
         
         //String signOrg = "";//null+"ABC"结果是nullABC
         StringBuilder sb1 = new StringBuilder();
-        String signValue = null;
         
         for(Map.Entry<String,String[]> mapping:list){
             
@@ -56,7 +92,6 @@ public class SignCheckUtil {
             }
             
             if("sign".equalsIgnoreCase(paramKey)){
-                signValue = paramValue[0];
                 continue;
             }
             
@@ -88,29 +123,8 @@ public class SignCheckUtil {
         //如果signOrg为null,md5DigestAsHex方法将抛出异常
         //空字符串("")md5DigestAsHex的结果为d41d8cd98f00b204e9800998ecf8427e
         String signMD5 = DigestUtils.md5DigestAsHex(sb2.toString().getBytes());
-        logger.info("signMD5:"+signMD5);
-        
-        if(signMD5.equalsIgnoreCase(signValue)) return true;
-        
-        return false;        
-    }
-    
-    static class RequestParameterComparator implements Comparator<Map.Entry<String,String[]>> {
-        
-        private Logger logger = Logger.getLogger(this.getClass());
-        
-        @Override
-        public int compare(Entry<String, String[]> o1, Entry<String, String[]> o2) {
+        logger.info("计算签名。签名值:"+signMD5);
 
-            try{
-                
-                return o1.getKey().compareTo(o2.getKey());
-                                                    
-            }catch(Exception e){
-                logger.error("RequestParameterComparator出错:"+e.toString());
-                return 0;
-            }
-        }
- 
-    }
+    	return signMD5;
+    }    
 }
