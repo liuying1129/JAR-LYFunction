@@ -62,7 +62,7 @@ public class SignCheckUtil {
     
     public static String signCalc(Map<String, String[]> inputParamMap,String token){    
     	
-        logger.info("计算签名。待计算参数:"+JSON.toJSONString(inputParamMap)+"token:"+token);
+        logger.info("计算签名。待计算参数:"+JSON.toJSONString(inputParamMap)+",token:"+token);
         
         List<Map.Entry<String,String[]>> list = new ArrayList<Map.Entry<String,String[]>>(inputParamMap.entrySet());
         
