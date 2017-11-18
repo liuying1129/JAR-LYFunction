@@ -25,6 +25,7 @@ public class SignCheckUtil {
     public static boolean signCheck(Map<String, String[]> inputParamMap,String token){        
         
     	String signMD5 = signCalc(inputParamMap,token);
+        logger.info("signCheck方法。通过请求参数计算的签名值:"+signMD5);
     	
     	String signValue = null;
     			
@@ -34,7 +35,7 @@ public class SignCheckUtil {
 
     			signValue = sl1[0];		
     	}
-        logger.info("签名校验。待校验签名值:"+signValue);
+        logger.info("signCheck方法。待校验签名值:"+signValue);
         
         if(signMD5.equalsIgnoreCase(signValue)) return true;
         
@@ -62,7 +63,7 @@ public class SignCheckUtil {
     
     public static String signCalc(Map<String, String[]> inputParamMap,String token){    
     	
-        logger.info("计算签名。待计算参数:"+JSON.toJSONString(inputParamMap)+",token:"+token);
+        logger.info("signCalc方法。待计算参数:"+JSON.toJSONString(inputParamMap)+",token:"+token);
         
         List<Map.Entry<String,String[]>> list = new ArrayList<Map.Entry<String,String[]>>(inputParamMap.entrySet());
         
@@ -97,8 +98,7 @@ public class SignCheckUtil {
             
             //signOrg=signOrg+paramKey+paramValue[0];
             sb1.append(paramKey);
-            sb1.append(paramValue[0]);
-            
+            sb1.append(paramValue[0]);            
         }
         
         StringBuilder sb2 = new StringBuilder();        
@@ -118,12 +118,11 @@ public class SignCheckUtil {
             sb2.insert(0, token);
         }
         
-        logger.info("拼出来的字符串:"+sb2.toString());
+        logger.info("signCalc方法。拼出来的字符串:"+sb2.toString());
         
         //如果signOrg为null,md5DigestAsHex方法将抛出异常
         //空字符串("")md5DigestAsHex的结果为d41d8cd98f00b204e9800998ecf8427e
         String signMD5 = DigestUtils.md5DigestAsHex(sb2.toString().getBytes());
-        logger.info("计算签名。签名值:"+signMD5);
 
     	return signMD5;
     }    
