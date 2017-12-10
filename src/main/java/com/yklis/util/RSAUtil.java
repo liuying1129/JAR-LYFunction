@@ -51,8 +51,7 @@ public class RSAUtil {
      */  
     public static byte[] encrypt(PublicKey publicKey, byte[] data) throws Exception {  
         try {  
-            Cipher cipher = Cipher.getInstance("RSA",  
-                    new BouncyCastleProvider());  
+            Cipher cipher = Cipher.getInstance("RSA");//第二参数,new BouncyCastleProvider()引起内存泄漏，去掉不影响
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);  
             int blockSize = cipher.getBlockSize();// 获得加密块大小，如：加密前数据为128个byte，而key_size=1024  
             // 加密块大小为127  
@@ -95,8 +94,7 @@ public class RSAUtil {
      */  
     public static byte[] decrypt(PrivateKey privateKey, byte[] raw) throws Exception {  
         try {  
-            Cipher cipher = Cipher.getInstance("RSA",  
-                    new BouncyCastleProvider());  
+            Cipher cipher = Cipher.getInstance("RSA");//第二参数,new BouncyCastleProvider()引起内存泄漏，去掉不影响
             cipher.init(Cipher.DECRYPT_MODE, privateKey);  
             int blockSize = cipher.getBlockSize();  
             ByteArrayOutputStream bout = new ByteArrayOutputStream(64);  
