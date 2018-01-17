@@ -51,6 +51,8 @@ public class SignCheckUtil {
 
             try{
                 
+                //字符串比较方法compareTo
+                //0:字符串相等;小于0:值小于字符串参数;大于0:值大于字符串参数
                 return o1.getKey().compareTo(o2.getKey());
                                                     
             }catch(Exception e){
