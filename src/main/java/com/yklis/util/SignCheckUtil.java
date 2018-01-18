@@ -42,7 +42,12 @@ public class SignCheckUtil {
         return false;        
     }
     
-    static class RequestParameterComparator implements Comparator<Map.Entry<String,String[]>> {
+    /**
+     * 自定义比较器:按map的key排序
+     * @author ying07.liu
+     *
+     */
+    static class RequestParameterComparator implements Comparator<Entry<String,String[]>> {
         
         private Logger logger = Logger.getLogger(this.getClass());
         
@@ -67,10 +72,11 @@ public class SignCheckUtil {
     	
         logger.info("signCalc方法。待计算参数:"+JSON.toJSONString(inputParamMap)+",token:"+token);
         
-        List<Map.Entry<String,String[]>> list = new ArrayList<Map.Entry<String,String[]>>(inputParamMap.entrySet());
+        List<Entry<String,String[]>> list = new ArrayList<Entry<String,String[]>>(inputParamMap.entrySet());
         
         try{
             //排序
+            //new RequestParameterComparator():创建内部类对象.因为该内部类是静态的,故直接new(或new SignCheckUtil.RequestParameterComparator())
             Collections.sort(list,new RequestParameterComparator());
         }catch(Exception e){
             logger.error("请求参数排序出错:"+e.toString());
@@ -79,7 +85,7 @@ public class SignCheckUtil {
         //String signOrg = "";//null+"ABC"结果是nullABC
         StringBuilder sb1 = new StringBuilder();
         
-        for(Map.Entry<String,String[]> mapping:list){
+        for(Entry<String,String[]> mapping:list){
             
             String paramKey = mapping.getKey(); 
             String[] paramValue = mapping.getValue();
