@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.javatuples.Pair;
 import org.springframework.util.DigestUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -24,7 +25,18 @@ public class SignCheckUtil {
     
     public static boolean signCheck(Map<String, String[]> inputParamMap,String token){        
         
-    	String signMD5 = signCalc(inputParamMap,token);
+    	Pair<Boolean,String> pairSign = signCalc(inputParamMap,token);
+    	
+    	if(null == pairSign) return false;
+    	
+    	Boolean boolSignCalc = pairSign.getValue0();
+    	String signMD5 = pairSign.getValue1();
+    	
+    	if(null == boolSignCalc) return false;
+    	if(null == signMD5) return false;
+    	
+    	if(!boolSignCalc) return false;
+    	
         logger.info("signCheck方法。通过请求参数计算的签名值:"+signMD5);
     	
     	String signValue = null;
@@ -33,13 +45,13 @@ public class SignCheckUtil {
     	
     	if(null!=sl1&&sl1.length > 0){
 
-    			signValue = sl1[0];		
+    			signValue = sl1[0];
     	}
         logger.info("signCheck方法。待校验签名值:"+signValue);
         
         if(signMD5.equalsIgnoreCase(signValue)) return true;
         
-        return false;        
+        return false;
     }
     
     /**
@@ -68,7 +80,13 @@ public class SignCheckUtil {
  
     }
     
-    public static String signCalc(Map<String, String[]> inputParamMap,String token){    
+    /**
+     * 
+     * @param inputParamMap
+     * @param token
+     * @return 元组类型<true或false,错误说明或计算值>
+     */
+    public static Pair<Boolean,String> signCalc(Map<String, String[]> inputParamMap,String token){    
     	
         logger.info("signCalc方法。待计算参数:"+JSON.toJSONString(inputParamMap)+",token:"+token);
         
@@ -79,7 +97,7 @@ public class SignCheckUtil {
             //new RequestParameterComparator():创建内部类对象.因为该内部类是静态的,故直接new(或new SignCheckUtil.RequestParameterComparator())
             Collections.sort(list,new RequestParameterComparator());
         }catch(Exception e){
-            logger.error("请求参数排序出错:"+e.toString());
+            return Pair.with(false, "请求参数排序出错:"+e.toString());
         }
         
         //String signOrg = "";//null+"ABC"结果是nullABC
@@ -116,8 +134,8 @@ public class SignCheckUtil {
         try {
             String s1 = URLEncoder.encode(sb1.toString(), "utf-8");
             sb2.append(s1);
-        } catch (Exception e) {            
-            logger.error("URLEncoder.encode报错:"+e.toString());
+        } catch (Exception e) {
+            return Pair.with(false, "URLEncoder.encode报错:"+e.toString());
         }
         
         //表示需要登录访问的接口
@@ -132,6 +150,6 @@ public class SignCheckUtil {
         //空字符串("")md5DigestAsHex的结果为d41d8cd98f00b204e9800998ecf8427e
         String signMD5 = DigestUtils.md5DigestAsHex(sb2.toString().getBytes());
 
-    	return signMD5;
+    	return Pair.with(true, signMD5);
     }    
 }

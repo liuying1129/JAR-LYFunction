@@ -58,6 +58,13 @@
             <artifactId>spring-core</artifactId>
             <version>4.1.7.RELEASE</version>
         </dependency>
+        
+        <!-- 元组类库 -->
+		<dependency>
+		    <groupId>org.javatuples</groupId>
+		    <artifactId>javatuples</artifactId>
+		    <version>1.2</version>
+		</dependency>
                 		
 	</dependencies>	
 

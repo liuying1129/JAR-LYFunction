@@ -2,6 +2,8 @@ package com.yklis.util;
 
 import java.util.Map;
 
+import org.javatuples.Pair;
+
 public class CommFunction {
     
     /**
@@ -34,7 +36,7 @@ public class CommFunction {
      * @param token
      * @return
      */
-    public static String signCalc(Map<String, String[]> inputParamMap,String token){  
+    public static Pair<Boolean,String> signCalc(Map<String, String[]> inputParamMap,String token){  
     	
     	return SignCheckUtil.signCalc(inputParamMap, token);
     }
