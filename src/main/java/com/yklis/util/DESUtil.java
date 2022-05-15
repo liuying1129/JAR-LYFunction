@@ -352,7 +352,10 @@ public class DESUtil {
     
     byte[] baStr = null;
     try {
-          baStr=aStr.getBytes("gb2312");
+    	  //GB2312编码：1981年5月1日发布的简体中文汉字编码国家标准。GB2312对汉字采用双字节编码，收录7445个图形字符，其中包括6763个汉字
+    	  //GBK编码：1995年12月发布的汉字编码国家标准，是对GB2312编码的扩充，对汉字采用双字节编码。GBK字符集共收录21003个汉字，包含国家标准GB13000-1中的全部中日韩汉字，和BIG5编码中的所有汉字
+    	  //如,栢,在GB2312中未被收录,导致加密不正确,故而改为gbk
+          baStr=aStr.getBytes("gbk");//gb2312
       } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
       }
@@ -462,7 +465,10 @@ public class DESUtil {
     String rStr = null;
     
     try {
-    	rStr = new String(sb.toString().getBytes("ISO8859_1"),"GB2312");
+  	    //GB2312编码：1981年5月1日发布的简体中文汉字编码国家标准。GB2312对汉字采用双字节编码，收录7445个图形字符，其中包括6763个汉字
+  	    //GBK编码：1995年12月发布的汉字编码国家标准，是对GB2312编码的扩充，对汉字采用双字节编码。GBK字符集共收录21003个汉字，包含国家标准GB13000-1中的全部中日韩汉字，和BIG5编码中的所有汉字
+  	    //如,栢,在GB2312中未被收录,导致解密不正确,故而改为gbk
+    	rStr = new String(sb.toString().getBytes("ISO8859_1"),"gbk");//GB2312
 	} catch (UnsupportedEncodingException e) {
 		e.printStackTrace();
 	}   
